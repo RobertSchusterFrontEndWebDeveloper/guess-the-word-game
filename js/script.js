@@ -3,13 +3,13 @@
 const guessedLettersElement = document.querySelector(".guessed-letters");
   // Guess button
 const guessLetterButton = document.querySelector(".guess");
-  // Guessed letter current input
+  // Guessed letter current input (letterInput in solution)
 const currentGuess = document.querySelector(".letter");
   // Word in progress area
 const wordInProgress = document.querySelector(".word-in-progress");
-  // Remaining guesses paragraph
+  // Remaining guesses paragraph (remainingGuessesElement in solution)
 const remainingGuesses = document.querySelector(".remaining");
-  // Remaining guesses count display
+  // Remaining guesses count display (remainingGuessesSpan in solution)
 const remainingSpan = document.querySelector(".remaining span"); // **** look this up!!
   // Messages paragraph when letter guessed
 const message = document.querySelector(".message");
@@ -23,7 +23,7 @@ const guessedLetters = [];
 
 // Step #1
   // Setup placeholders for each letter of word to guess as "●"
-    // const currentWord will be the current word to guess
+    // const currentWord will be the current word to guess- "placeholder" in solution
 const currentWord = function (word) {
   const placeHolderLetters =[];
   for (const letter of word) {
@@ -32,7 +32,7 @@ const currentWord = function (word) {
   }
   wordInProgress.innerText = placeHolderLetters.join("");
 };
-currentWord(word);
+currentWord(word);  // "currentWord" = solutions 'placeholder' 
 
   // Button Event listener for player guesses 
     // guessLetter will be the current guess input
@@ -40,6 +40,7 @@ guessLetterButton.addEventListener("click", function(e) {
   e.preventDefault();
   message.innerText = "";
   const letterChosen = currentGuess.value;
+  // letterChosen is "guess" in solution; currentGuess is "letterInput" in solution
   // send to check if it is a single letter
   const goodGuess = validateGuess(letterChosen);
 
@@ -51,19 +52,20 @@ guessLetterButton.addEventListener("click", function(e) {
 
 // Step #2
   // function to accept value as parameter
-const validateGuess = function (letterChosen) {
+  // validateGuess is letterInput in solution
+const validateGuess = function (input) {
   const acceptedLetter = /[a-zA-Z]/;
-  if (letterChosen.length === 0 ) {
+  if (input.length === 0 ) {
     // to check if input was nothing
     message.innerText = "You need to input a letter.";
-  } else if (letterChosen.length > 1) {
+  } else if (input.length > 1) {
     message.innerText = "Oops you entered 2 letters.";
-  } else if (!letterChosen.match(acceptedLetter)) {
+  } else if (!input.match(acceptedLetter)) {
     // When input is other than letter
     message.innerText = "Oh!  Something other than a letter was given. Try again!";
   } else {
     // single letter was input
-    return letterChosen;
+    return input;
   }
 };
 
@@ -74,8 +76,46 @@ const makeGuess = function(letterChosen) {
   } else {
     guessedLetters.push(letterChosen);
     console.log(guessedLetters);
+    showGuessedLetters();
+    updateWordInProgress(guessedLetters);
+    // return playerGuess;
+  }
+};
+
+// Step #3 Function to display Letters chosen and word to guess
+const showGuessedLetters = function () {
+  // clear the list of letters
+  guessedLettersElement.innerHTML = "";
+  for (const letter of guessedLetters) {
+    const li = document.createElement("li");
+    li.innerText = letter;
+    guessedLettersElement.append(li);
   }
 };
 
 
+
+
+const updateWordInProgress = function (guessedLetters) {
+  const wordUpper = word.toUpperCase();
+  const wordArray = wordUpper.split("");
+  const revealWord = [];
+  for (const letter of wordArray) {
+    if (guessedLetters.includes(letter)){
+      revealWord.push(letter.toUpperCase());
+    } else {
+      revealWord.push("●");
+    }
+  }
+  console.log(revealWord);
+  wordInProgress.innerText = revealWord.join("");
+  checkIfWin();
+};
+
+const checkIfWin = function (){
+  if (word.toUpperCase() === wordInProgress.innerText) {
+    message.classList.add("win");
+    message.innerHTML = `<p class="highlight">You guessed the Word!!  Nice Job!</p>`;
+  }
+};
 
