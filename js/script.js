@@ -21,7 +21,7 @@ const word = "magnolia";
   // Letters guessed
 const guessedLetters = [];
   // number of guesses
-const remainingGuesses = 8;
+let remainingGuesses = 8;
 
 // Step #1
   // Setup placeholders for each letter of word to guess as "●"
@@ -70,7 +70,6 @@ const validateGuess = function (input) {
     return input;
   }
 
-  return guessesRemaining;
 };
 
 const makeGuess = function(letterChosen) {
@@ -80,6 +79,7 @@ const makeGuess = function(letterChosen) {
   } else {
     guessedLetters.push(letterChosen);
     console.log(guessedLetters);
+    guessesRemaining(letterChosen);
     showGuessedLetters();
     updateWordInProgress(guessedLetters);
     // return playerGuess;
@@ -117,22 +117,22 @@ const updateWordInProgress = function (guessedLetters) {
 const guessesRemaining = function (letterChosen) {
   const upperWord = word.toUpperCase();
   if (!upperWord.includes(letterChosen)) {
-    remainingGuessesElement.innerText = `Pick another letter. ${remainingGuesses} guesses.`;
+    message.innerText = `Pick another letter. ${letterChosen} is not in the word.`;
     remainingGuesses -= 1;
   } else {
     message.innerText = `Nice Guess!  The letter ${letterChosen} is in the word.`;
   }
 
   if (remainingGuesses === 0 ){
-    message.innerText = `No more guesses`;
+    message.innerText = `No more guesses! The word was <span class="highlight">${word}</span>.`;
   } else  if (remainingGuesses === 1) {
     remainingSpan.innerText = `${remainingGuesses} guess`;
   } else {
     remainingSpan.innerText = `${remainingGuesses} guesses.`;
-  }
-  };
-    
+  }  
   console.log(remainingGuesses);
+};
+  
 
 const checkIfWin = function (){
   if (word.toUpperCase() === wordInProgress.innerText) {
