@@ -23,7 +23,13 @@ const guessedLetters = [];
   // number of guesses
 let remainingGuesses = 8;
 
-// Step #1
+// Get random word for each game.
+const getWord = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt") {
+
+}
+
+
+
   // Setup placeholders for each letter of word to guess as "●"
     // const currentWord will be the current word to guess- "placeholder" in solution
 const currentWord = function (word) {
@@ -75,7 +81,7 @@ const validateGuess = function (input) {
 const makeGuess = function(letterChosen) {
   letterChosen = letterChosen.toUpperCase();
   if(guessedLetters.includes(letterChosen)) {
-    message.innerText = "You Guessed this letter already :P  Try again."
+    message.innerText = "You Guessed this letter already Silly! :P  Try again."
   } else {
     guessedLetters.push(letterChosen);
     console.log(guessedLetters);
@@ -117,14 +123,15 @@ const updateWordInProgress = function (guessedLetters) {
 const guessesRemaining = function (letterChosen) {
   const upperWord = word.toUpperCase();
   if (!upperWord.includes(letterChosen)) {
-    message.innerText = `Pick another letter. ${letterChosen} is not in the word.`;
+    message.innerHTML = `Pick another letter.<span class="highlight"> "${letterChosen}"</span> is not in the word.`;
     remainingGuesses -= 1;
   } else {
-    message.innerText = `Nice Guess!  The letter ${letterChosen} is in the word.`;
+    message.innerHTML = `Nice Guess!  The letter<span class="highlight"> "${letterChosen}"</span> is in the word.`;
   }
 
   if (remainingGuesses === 0 ){
-    message.innerText = `No more guesses! The word was <span class="highlight">${word}</span>.`;
+    message.innerHTML = `No more guesses! The word was <span class="highlight">${word}</span>.`;
+    remainingSpan.innerText = `${remainingGuesses} guesses.`
   } else  if (remainingGuesses === 1) {
     remainingSpan.innerText = `${remainingGuesses} guess`;
   } else {
