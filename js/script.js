@@ -17,18 +17,40 @@ const message = document.querySelector(".message");
 const playAgain = document.querySelector(".play-again");
 
   // Random word
-const word = "magnolia";
+let word = "magnolia";
   // Letters guessed
 const guessedLetters = [];
   // number of guesses
 let remainingGuesses = 8;
 
-// Get random word for each game.
+// Get words from text api.
 const getWord = async function () {
   const request = await fetch(`https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt`);
   const data = await request.text();
   console.log(data);
+
+  const wordArray = data.split("\n"); // Convert the list of words into a list without returns in it.
+  console.log(wordArray);
+
+  selectRandomWord(wordArray); // Random choice from list.
+
+  currentWord(word);  // "currentWord" = solutions 'placeholder' 
 };
+
+// Select random word from word api.
+const selectRandomWord = function (wordArray) {
+  const randomIndex = Math.floor(Math.floor(Math.random() * wordArray.length));  // Calculate the number of words in the array and randomly select a number from the quantity.
+  console.log(`Database is- ${wordArray.length} long.`);
+  console.log(`Random index chosen is- ${randomIndex}`);
+  console.log[wordArray];
+
+  const randomWordChoice = wordArray[randomIndex]; // Select the word randomly from the index list.
+  word = (randomWordChoice.trim()); // set the randomly chosen word to the word variable.
+  
+  console.log(`${word} - is the word chosen.`); 
+  currentWord(word);
+}
+
 getWord ();
 
 
@@ -43,7 +65,6 @@ const currentWord = function (word) {
   }
   wordInProgress.innerText = placeHolderLetters.join("");
 };
-currentWord(word);  // "currentWord" = solutions 'placeholder' 
 
   // Button Event listener for player guesses 
     // guessLetter will be the current guess input
