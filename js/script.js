@@ -10,7 +10,7 @@ const wordInProgress = document.querySelector(".word-in-progress");
   // Remaining guesses paragraph (remainingGuessesElement in solution)
 const remainingGuessesElement = document.querySelector(".remaining");
   // Remaining guesses count display (remainingGuessesSpan in solution)
-const remainingSpan = document.querySelector(".remaining span"); // **** look this up!!
+const remainingSpan = document.querySelector(".remaining span"); 
   // Messages paragraph when letter guessed
 const message = document.querySelector(".message");
   // Play again button
@@ -19,7 +19,7 @@ const playAgain = document.querySelector(".play-again");
   // Random word
 let word = "magnolia";
   // Letters guessed
-const guessedLetters = [];
+let guessedLetters = [];
   // number of guesses
 let remainingGuesses = 8;
 
@@ -27,10 +27,10 @@ let remainingGuesses = 8;
 const getWord = async function () {
   const request = await fetch(`https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt`);
   const data = await request.text();
-  console.log(data);
+  //console.log(data);
 
   const wordArray = data.split("\n"); // Convert the list of words into a list without returns in it.
-  console.log(wordArray);
+  //console.log(wordArray);
 
   selectRandomWord(wordArray); // Random choice from list.
 
@@ -40,27 +40,25 @@ const getWord = async function () {
 // Select random word from word api.
 const selectRandomWord = function (wordArray) {
   const randomIndex = Math.floor(Math.floor(Math.random() * wordArray.length));  // Calculate the number of words in the array and randomly select a number from the quantity.
-  console.log(`Database is- ${wordArray.length} long.`);
-  console.log(`Random index chosen is- ${randomIndex}`);
-  console.log[wordArray];
+  //console.log(`Database is- ${wordArray.length} long.`);
+  //console.log(`Random index chosen is- ${randomIndex}`);
+  //console.log[wordArray];
 
   const randomWordChoice = wordArray[randomIndex]; // Select the word randomly from the index list.
   word = (randomWordChoice.trim()); // set the randomly chosen word to the word variable.
   
-  console.log(`${word} - is the word chosen.`); 
+  //console.log(`${word} - is the word chosen.`); 
   currentWord(word);
 }
-
+// Start game
 getWord ();
-
-
 
   // Setup placeholders for each letter of word to guess as "●"
     // const currentWord will be the current word to guess- "placeholder" in solution
 const currentWord = function (word) {
   const placeHolderLetters =[];
   for (const letter of word) {
-    console.log(letter);
+    //console.log(letter);
     placeHolderLetters.push("●")
   }
   wordInProgress.innerText = placeHolderLetters.join("");
@@ -82,7 +80,6 @@ guessLetterButton.addEventListener("click", function(e) {
   currentGuess.value = "";
 });
 
-// Step #2
   // function to accept value as parameter
   // validateGuess is letterInput in solution
 const validateGuess = function (input) {
@@ -102,13 +99,14 @@ const validateGuess = function (input) {
 
 };
 
+// process the guessed letter
 const makeGuess = function(letterChosen) {
   letterChosen = letterChosen.toUpperCase();
   if(guessedLetters.includes(letterChosen)) {
-    message.innerText = "You Guessed this letter already Silly! :P  Try again."
+    message.innerText = "You Guessed this letter already Silly! 😜  Try again."
   } else {
     guessedLetters.push(letterChosen);
-    console.log(guessedLetters);
+    //console.log(guessedLetters);
     guessesRemaining(letterChosen);
     showGuessedLetters();
     updateWordInProgress(guessedLetters);
@@ -116,7 +114,7 @@ const makeGuess = function(letterChosen) {
   }
 };
 
-// Step #3 Function to display Letters chosen and word to guess
+// Function to display Letters chosen and word to guess
 const showGuessedLetters = function () {
   // clear the list of letters
   guessedLettersElement.innerHTML = "";
@@ -138,7 +136,7 @@ const updateWordInProgress = function (guessedLetters) {
       revealWord.push("●");
     }
   }
-  console.log(revealWord);
+  //console.log(revealWord);
   wordInProgress.innerText = revealWord.join("");
   checkIfWin();
 };
@@ -154,20 +152,53 @@ const guessesRemaining = function (letterChosen) {
   }
 
   if (remainingGuesses === 0 ){
-    message.innerHTML = `No more guesses! The word was <span class="highlight">${word}</span>.`;
-    remainingSpan.innerText = `${remainingGuesses} guesses.`
+    message.innerHTML = `No more Guesses. The word was <span class="highlight">${word}</span>.`;
+    startOver();
   } else  if (remainingGuesses === 1) {
     remainingSpan.innerText = `${remainingGuesses} guess`;
   } else {
     remainingSpan.innerText = `${remainingGuesses} guesses.`;
   }  
-  console.log(remainingGuesses);
+  //console.log(remainingGuesses);
 };
   
-
+// Check to see if word has been guessed
 const checkIfWin = function (){
   if (word.toUpperCase() === wordInProgress.innerText) {
     message.classList.add("win");
-    message.innerHTML = `<p class="highlight">You guessed the Word!!  Nice Job!</p>`;
+    message.innerHTML = `<p class="highlight">You guessed the Word!! 🥳  Nice Job!</p>`;
+    startOver();
   }
 };
+
+const playAgainButton = document.querySelector(".play-again");
+
+// Start over function
+const startOver = function () {
+  guessLetterButton.classList.add("hide");
+  remainingGuessesElement.classList.add("hide");
+  remainingSpan.classList.add("hide");
+  guessedLettersElement.classList.add("hide");
+
+  playAgainButton.classList.remove("hide");
+};
+
+// Play again
+playAgainButton.addEventListener("click", function() {
+  // console.log("play again clicked");
+  
+  message.classList.remove("win");
+  guessedLetters = [];
+  remainingSpan.classList.remove("hide");
+  remainingGuesses = 8;
+  remainingSpan.innerText = `${remainingGuesses} guesses.`;
+  guessedLettersElement.classList.remove("hide");
+  guessLetterButton.classList.remove("hide");
+  remainingGuessesElement.classList.remove("hide");
+  playAgainButton.classList.add("hide");
+  guessedLettersElement.innerHTML = "";
+  message.innerText = "";
+  //word = "";
+
+  getWord();
+});
