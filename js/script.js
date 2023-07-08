@@ -30,7 +30,6 @@ const getWord = async function () {
   //console.log(data);
 
   const wordArray = data.split("\n"); // Convert the list of words into a list without returns in it.
-  //console.log(wordArray);
 
   selectRandomWord(wordArray); // Random choice from list.
 
