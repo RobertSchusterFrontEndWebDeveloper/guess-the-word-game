@@ -27,50 +27,38 @@ let remainingGuesses = 8;
 const getWord = async function () {
   const request = await fetch(`https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt`);
   const data = await request.text();
-  //console.log(data);
 
   const wordArray = data.split("\n"); // Convert the list of words into a list without returns in it.
 
-  selectRandomWord(wordArray); // Random choice from list.
+  selectRandomWord(wordArray); 
 
-  currentWord(word);  // "currentWord" = solutions 'placeholder' 
+  currentWord(word);  
 };
 
-// Select random word from word api.
 const selectRandomWord = function (wordArray) {
   const randomIndex = Math.floor(Math.floor(Math.random() * wordArray.length));  // Calculate the number of words in the array and randomly select a number from the quantity.
-  //console.log(`Database is- ${wordArray.length} long.`);
-  //console.log(`Random index chosen is- ${randomIndex}`);
-  //console.log[wordArray];
 
-  const randomWordChoice = wordArray[randomIndex]; // Select the word randomly from the index list.
-  word = (randomWordChoice.trim()); // set the randomly chosen word to the word variable.
+  const randomWordChoice = wordArray[randomIndex]; 
+  word = (randomWordChoice.trim()); 
   
-  //console.log(`${word} - is the word chosen.`); 
   currentWord(word);
 }
 // Start game
 getWord ();
 
   // Setup placeholders for each letter of word to guess as "●"
-    // const currentWord will be the current word to guess- "placeholder" in solution
 const currentWord = function (word) {
   const placeHolderLetters =[];
   for (const letter of word) {
-    //console.log(letter);
     placeHolderLetters.push("●")
   }
   wordInProgress.innerText = placeHolderLetters.join("");
 };
 
-  // Button Event listener for player guesses 
-    // guessLetter will be the current guess input
 guessLetterButton.addEventListener("click", function(e) {
   e.preventDefault();
   message.innerText = "";
   const letterChosen = currentGuess.value;
-  // letterChosen is "guess" in solution; currentGuess is "letterInput" in solution
-  // send to check if it is a single letter
   const goodGuess = validateGuess(letterChosen);
 
   if (goodGuess) {
@@ -79,7 +67,6 @@ guessLetterButton.addEventListener("click", function(e) {
   currentGuess.value = "";
 });
 
-  // function to accept value as parameter
   // validateGuess is letterInput in solution
 const validateGuess = function (input) {
   const acceptedLetter = /[a-zA-Z]/;
@@ -92,7 +79,6 @@ const validateGuess = function (input) {
     // When input is other than letter
     message.innerText = "Oh!  Something other than a letter was given. Try again!";
   } else {
-    // single letter was input
     return input;
   }
 
@@ -105,11 +91,9 @@ const makeGuess = function(letterChosen) {
     message.innerText = "You Guessed this letter already Silly! 😜  Try again."
   } else {
     guessedLetters.push(letterChosen);
-    //console.log(guessedLetters);
     guessesRemaining(letterChosen);
     showGuessedLetters();
     updateWordInProgress(guessedLetters);
-    // return playerGuess;
   }
 };
 
@@ -135,7 +119,6 @@ const updateWordInProgress = function (guessedLetters) {
       revealWord.push("●");
     }
   }
-  //console.log(revealWord);
   wordInProgress.innerText = revealWord.join("");
   checkIfWin();
 };
@@ -158,7 +141,6 @@ const guessesRemaining = function (letterChosen) {
   } else {
     remainingSpan.innerText = `${remainingGuesses} guesses.`;
   }  
-  //console.log(remainingGuesses);
 };
   
 // Check to see if word has been guessed
@@ -184,7 +166,6 @@ const startOver = function () {
 
 // Play again
 playAgainButton.addEventListener("click", function() {
-  // console.log("play again clicked");
   
   message.classList.remove("win");
   guessedLetters = [];
