@@ -171,7 +171,7 @@ playAgainButton.addEventListener("click", function() {
   guessedLetters = [];
   remainingSpan.classList.remove("hide");
   remainingGuesses = 8;
-  remainingSpan.innerText = `${remainingGuesses} guesses.`;
+  remainingSpan.innerText = `${remainingGuesses} guesses`;
   guessedLettersElement.classList.remove("hide");
   guessLetterButton.classList.remove("hide");
   remainingGuessesElement.classList.remove("hide");
